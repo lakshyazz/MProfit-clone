@@ -19,7 +19,7 @@
 .title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--color-navy);
+  color: #111827; /* Near black */
   margin-bottom: 12px;
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
 }
 
 .subtitle {
-  color: var(--color-text-secondary);
+  color: #4b5563; /* Dark gray */
   font-size: 1.15rem;
   max-width: 600px;
 }
@@ -74,12 +74,12 @@
 
 .exportCard h2 {
   font-size: 1.2rem;
-  color: var(--color-text-primary);
+  color: #111827;
   margin-bottom: 10px;
 }
 
 .exportCard p {
-  color: var(--color-text-secondary);
+  color: #4b5563;
   font-size: 0.9rem;
   line-height: 1.5;
   margin-bottom: 20px;

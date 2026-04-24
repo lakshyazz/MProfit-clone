@@ -17,13 +17,13 @@
 .title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--color-navy);
+  color: #111827; /* Near black */
   margin-bottom: 12px;
   letter-spacing: -0.02em;
 }
 
 .subtitle {
-  color: var(--color-text-secondary);
+  color: #4b5563; /* Dark gray */
   font-size: 1.15rem;
   max-width: 600px;
 }
@@ -51,12 +51,12 @@
 
 .card h2 {
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: #111827;
   margin-bottom: 15px;
 }
 
 .card p {
-  color: var(--text-secondary);
+  color: #4b5563;
   font-size: 0.95rem;
   line-height: 1.5;
   margin-bottom: 25px;
@@ -138,13 +138,13 @@
 }
 
 .brokerName {
-  color: var(--text-primary);
+  color: #111827;
   font-weight: 500;
 }
 
 .brokerStatus {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: #6b7280;
 }
 
 .connectBtn {
