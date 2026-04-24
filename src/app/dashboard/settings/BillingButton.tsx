@@ -4,7 +4,7 @@ import styles from './page.module.css';
 
 export default function BillingButton() {
   const handleManageSubscription = () => {
-    alert('💳 Billing portal\n\nPlan: MProfit PRO\nNext Billing: 14-Aug-2024\nAmount: ₹3,500/year');
+    alert('💳 Billing portal\n\nPlan: Standard Plan\nStatus: Free / Active');
   };
 
   return (

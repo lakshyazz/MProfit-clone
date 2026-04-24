@@ -46,7 +46,7 @@ export default function Pricing() {
 
             <div className={`${styles.priceCard} ${styles.popular}`}>
               <div className={styles.popularBadge}>Most Popular</div>
-              <h3 className={styles.planName}>Pro</h3>
+              <h3 className={styles.planName}>Premium</h3>
               <div className={styles.planPrice}>
                 <span className={styles.currency}>₹</span>2,999
                 <span className={styles.period}>/year</span>

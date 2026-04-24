@@ -19,7 +19,6 @@ export default function Sidebar() {
       <div className={styles.brand}>
         <Link href="/">
           <span className={styles.brandName}>MProfit</span>
-          <span className={styles.betaTag}>PRO</span>
         </Link>
       </div>
 

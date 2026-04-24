@@ -81,8 +81,8 @@ export default function SettingsPage() {
           {/* Billing Card */}
           <section className={`glass-panel ${styles.settingsCard} ${styles.highlightCard}`}>
             <h3 className={styles.cardTitle}>Subscription Plan</h3>
-            <div className={styles.planBadge}>MProfit PRO</div>
-            <p className={styles.planDesc}>Active tier. Gives you unlimited portfolio tracking, direct API integrations, and capital gains automation.</p>
+            <div className={styles.planBadge}>Standard Plan</div>
+            <p className={styles.planDesc}>Free tier. Access portfolio tracking, insights, and basic reports.</p>
             <div className={styles.planDetails}>
               <div>Next Billing: <strong>14-Aug-2024</strong></div>
               <div>Amount: <strong>₹ 3,500/year</strong></div>

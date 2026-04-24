@@ -26,7 +26,7 @@ export default function SmartImporterPage() {
   const brokers = [
     { id: 'zerodha', name: 'Zerodha Kite', status: 'API Connected' },
     { id: 'groww', name: 'Groww', status: 'Supports Auto-Sync' },
-    { id: 'upstox', name: 'Upstox Pro', status: 'API Connected' },
+    { id: 'upstox', name: 'Upstox', status: 'API Connected' },
     { id: 'cams', name: 'CAMS / KFintech', status: 'MF Central Sync' },
   ];
 
@@ -38,7 +38,7 @@ export default function SmartImporterPage() {
       </header>
 
       <div className={styles.grid}>
-        <div className={styles.card}>
+        <div className={`glass-panel ${styles.card}`}>
           <h2>CAS & Tax Statement Upload</h2>
           <p>
             Drag and drop your NSDL/CDSL Consolidated Account Statement (CAS), Form 26AS, or generic broker contract notes. Our AI parser maps all transactions automatically.
@@ -59,7 +59,7 @@ export default function SmartImporterPage() {
           </div>
         </div>
 
-        <div className={styles.card}>
+        <div className={`glass-panel ${styles.card}`}>
           <h2>Live Broker Sync</h2>
           <p>
             Connect directly to your brokerage accounts via secure Account Aggregator APIs. We sync trades nightly so your portfolio is never out of date.
