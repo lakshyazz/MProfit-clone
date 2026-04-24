@@ -142,7 +142,10 @@ export function HoldingsProvider({ children }: { children: ReactNode }) {
         newInvested += txn.amount;
         newCurrent += txn.amount;
       } else if (txn.type === 'SELL') {
-        newCurrent -= txn.amount;
+        // Proportionally reduce invested based on sell percentage of current value
+        const sellRatio = newCurrent > 0 ? txn.amount / newCurrent : 0;
+        newInvested = Math.max(0, newInvested - (newInvested * sellRatio));
+        newCurrent = Math.max(0, newCurrent - txn.amount);
       }
       
       const absReturn = newInvested > 0 

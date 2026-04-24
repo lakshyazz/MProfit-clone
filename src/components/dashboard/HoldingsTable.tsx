@@ -71,6 +71,12 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
     e.preventDefault();
     if (!syncedAsset || txnAmount === '' || txnAmount <= 0) return;
 
+    // Prevent selling more than current value
+    if (txnType === 'SELL' && txnAmount > syncedAsset.current) {
+      alert(`❌ Cannot sell ₹${txnAmount.toLocaleString('en-IN')} — your current holding is only ₹${syncedAsset.current.toLocaleString('en-IN')}.`);
+      return;
+    }
+
     const dateObj = new Date(txnDate);
     const formattedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 

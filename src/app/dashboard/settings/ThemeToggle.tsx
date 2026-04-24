@@ -15,7 +15,6 @@ export default function ThemeToggle() {
   }, []);
 
   useEffect(() => {
-    console.log('Applying theme:', activeTheme);
     // Actually apply the theme to the document body to reflect real state
     if (activeTheme === 'dark') {
       document.body.classList.add('dark-theme');
@@ -24,7 +23,6 @@ export default function ThemeToggle() {
       document.body.classList.remove('dark-theme');
       localStorage.setItem('mprofit_theme', 'light');
     }
-    console.log('Current body classes:', document.body.className);
   }, [activeTheme]);
 
   return (

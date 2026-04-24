@@ -84,8 +84,8 @@ export default function SettingsPage() {
             <div className={styles.planBadge}>Standard Plan</div>
             <p className={styles.planDesc}>Free tier. Access portfolio tracking, insights, and basic reports.</p>
             <div className={styles.planDetails}>
-              <div>Next Billing: <strong>14-Aug-2024</strong></div>
-              <div>Amount: <strong>₹ 3,500/year</strong></div>
+              <div>Status: <strong>Active (Free)</strong></div>
+              <div>Upgrade to Premium for unlimited features</div>
             </div>
             <BillingButton />
           </section>
