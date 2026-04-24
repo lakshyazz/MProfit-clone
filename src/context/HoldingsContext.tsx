@@ -30,7 +30,7 @@ interface HoldingsContextType {
 
 const defaultHoldings: HoldingData[] = [
   // Reduced dummy data for a cleaner start
-  { id: 1, name: 'Reliance Industries', class: 'Equity', invested: 1540000, current: 2150000, absReturn: 39.6, xirr: 18.4, transactions: [{ id: 't1', type: 'BUY', date: '12 May 2023', amount: 1540000 }] },
+  { id: 1, name: 'Reliance Industries (RELIANCE)', class: 'Equity', invested: 1540000, current: 2150000, absReturn: 39.6, xirr: 18.4, transactions: [{ id: 't1', type: 'BUY', date: '12 May 2023', amount: 1540000 }] },
   { id: 3, name: 'Parag Parikh Flexi Cap', class: 'Mutual Fund', invested: 1200000, current: 2450000, absReturn: 104.1, xirr: 22.8, transactions: [{ id: 't2', type: 'BUY', date: '05 Jan 2023', amount: 1200000 }] },
   { id: 12, name: 'Public Provident Fund (PPF)', class: 'Fixed Income', invested: 1500000, current: 1820000, absReturn: 21.3, xirr: 7.1, transactions: [{ id: 't3', type: 'BUY', date: '10 Apr 2023', amount: 1500000 }] },
   { id: 4, name: 'SGB Aug 2028', class: 'Gold', invested: 500000, current: 650000, absReturn: 30.0, xirr: 14.5, transactions: [{ id: 't4', type: 'BUY', date: '20 Aug 2023', amount: 500000 }] }
@@ -101,8 +101,9 @@ export function HoldingsProvider({ children }: { children: ReactNode }) {
     const fetchPrices = async () => {
       let updated = false;
       const newHoldings = await Promise.all(holdings.map(async (h) => {
-        // Only fetch for Equity for now
-        if (h.class.toLowerCase() !== 'equity') return h;
+        // Only fetch for Equity or Stocks & ETFs
+        const assetClass = h.class.toLowerCase();
+        if (assetClass !== 'equity' && assetClass !== 'stocks etfs') return h;
 
         // Try to extract ticker symbol from format "Company Name (TICKER)"
         const match = h.name.match(/\(([^)]+)\)/);
