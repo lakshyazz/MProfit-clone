@@ -17,6 +17,7 @@ export interface HoldingData {
   current: number;
   absReturn: number;
   xirr: number;
+  lastFetchedPrice?: number;
   transactions?: Transaction[];
 }
 
@@ -92,6 +93,72 @@ export function HoldingsProvider({ children }: { children: ReactNode }) {
       window.removeEventListener('error', handleError);
     };
   }, []);
+
+  // Real-time API Polling (every 60s)
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const fetchPrices = async () => {
+      let updated = false;
+      const newHoldings = await Promise.all(holdings.map(async (h) => {
+        // Only fetch for Equity for now
+        if (h.class.toLowerCase() !== 'equity') return h;
+
+        // Try to extract ticker symbol from format "Company Name (TICKER)"
+        const match = h.name.match(/\(([^)]+)\)/);
+        if (!match) return h;
+        const symbol = `${match[1]}.NS`;
+
+        try {
+          const res = await fetch(`/api/quote?symbol=${symbol}`);
+          const data = await res.json();
+
+          if (data.price) {
+            const currentPrice = data.price;
+            
+            // If we have a last fetched price, use it to calculate the ratio
+            // If not, we just record it and wait for the next tick to adjust 'current'
+            let newCurrent = h.current;
+            if (h.lastFetchedPrice && h.lastFetchedPrice > 0) {
+              const ratio = currentPrice / h.lastFetchedPrice;
+              newCurrent = h.current * ratio;
+            }
+
+            const newAbsReturn = h.invested > 0 
+              ? parseFloat(((newCurrent - h.invested) / h.invested * 100).toFixed(2)) 
+              : 0;
+
+            if (newCurrent !== h.current || currentPrice !== h.lastFetchedPrice) {
+              updated = true;
+              return {
+                ...h,
+                current: newCurrent,
+                absReturn: isNaN(newAbsReturn) ? 0 : newAbsReturn,
+                lastFetchedPrice: currentPrice
+              };
+            }
+          }
+        } catch (e) {
+          console.error(`Failed to fetch price for ${symbol}`, e);
+        }
+        return h;
+      }));
+
+      if (updated) {
+        setHoldings(newHoldings);
+      }
+    };
+
+    // Fetch immediately on mount
+    fetchPrices();
+
+    // Then every 60 seconds
+    const interval = setInterval(fetchPrices, 60000);
+    return () => clearInterval(interval);
+    
+  // Disable exhaustive-deps because we only want to trigger this interval setup once
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialized]);
 
   const addHolding = (newHolding: Omit<HoldingData, 'id' | 'absReturn' | 'xirr' | 'transactions'> & { initialDate?: string }) => {
     // Calculate Absolute Return based on real inputs
