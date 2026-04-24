@@ -24,6 +24,7 @@ interface HoldingsContextType {
   holdings: HoldingData[];
   addHolding: (holding: Omit<HoldingData, 'id' | 'absReturn' | 'xirr' | 'transactions'> & { initialDate?: string }) => void;
   removeHolding: (id: number) => void;
+  addTransaction: (holdingId: number, txn: Transaction) => void;
 }
 
 const defaultHoldings: HoldingData[] = [
@@ -127,8 +128,39 @@ export function HoldingsProvider({ children }: { children: ReactNode }) {
     setHoldings(prev => prev.filter(h => h.id !== id));
   };
 
+  const addTransaction = (holdingId: number, txn: Transaction) => {
+    setHoldings(prev => prev.map(h => {
+      if (h.id !== holdingId) return h;
+      
+      const updatedTransactions = [...(h.transactions || []), txn];
+      
+      // Update financials based on transaction type
+      let newInvested = h.invested;
+      let newCurrent = h.current;
+      
+      if (txn.type === 'BUY') {
+        newInvested += txn.amount;
+        newCurrent += txn.amount;
+      } else if (txn.type === 'SELL') {
+        newCurrent -= txn.amount;
+      }
+      
+      const absReturn = newInvested > 0 
+        ? parseFloat(((newCurrent - newInvested) / newInvested * 100).toFixed(2))
+        : 0;
+      
+      return {
+        ...h,
+        invested: newInvested,
+        current: newCurrent,
+        absReturn: isNaN(absReturn) ? 0 : absReturn,
+        transactions: updatedTransactions,
+      };
+    }));
+  };
+
   return (
-    <HoldingsContext.Provider value={{ holdings, addHolding, removeHolding }}>
+    <HoldingsContext.Provider value={{ holdings, addHolding, removeHolding, addTransaction }}>
       {children}
     </HoldingsContext.Provider>
   );

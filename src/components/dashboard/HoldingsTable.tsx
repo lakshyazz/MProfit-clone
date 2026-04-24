@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import styles from './HoldingsTable.module.css';
 import AddAssetButton from './AddAssetButton';
@@ -19,8 +19,13 @@ interface HoldingsTableProps {
 }
 
 export default function HoldingsTable({ title = "Top Holdings", hideViewAll = false, data, filterCategory }: HoldingsTableProps) {
-  const { holdings: contextHoldings, removeHolding } = useHoldings();
+  const { holdings: contextHoldings, removeHolding, addTransaction } = useHoldings();
   const [selectedAsset, setSelectedAsset] = useState<HoldingData | null>(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showAddTxnForm, setShowAddTxnForm] = useState(false);
+  const [txnType, setTxnType] = useState<'BUY' | 'SELL'>('BUY');
+  const [txnAmount, setTxnAmount] = useState<number | ''>('');
+  const [txnDate, setTxnDate] = useState(new Date().toISOString().split('T')[0]);
 
   const displayData = useMemo(() => {
     let sourceData = data || contextHoldings;
@@ -36,13 +41,54 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
     return sourceData;
   }, [data, contextHoldings, filterCategory]);
 
+  // Keep selectedAsset in sync with context updates
+  const syncedAsset = useMemo(() => {
+    if (!selectedAsset) return null;
+    return contextHoldings.find(h => h.id === selectedAsset.id) || null;
+  }, [selectedAsset, contextHoldings]);
+
   const handleRowClick = (asset: HoldingData) => {
     setSelectedAsset(asset);
+    setShowConfirmDelete(false);
+    setShowAddTxnForm(false);
   };
 
   const closePanel = () => {
     setSelectedAsset(null);
+    setShowConfirmDelete(false);
+    setShowAddTxnForm(false);
   };
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (syncedAsset) {
+      removeHolding(syncedAsset.id);
+    }
+    setShowConfirmDelete(false);
+    closePanel();
+  }, [syncedAsset, removeHolding]);
+
+  const handleAddTransaction = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (!syncedAsset || txnAmount === '' || txnAmount <= 0) return;
+
+    const dateObj = new Date(txnDate);
+    const formattedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    addTransaction(syncedAsset.id, {
+      id: Date.now().toString(),
+      type: txnType,
+      date: formattedDate,
+      amount: txnAmount,
+    });
+
+    // Reset form
+    setTxnAmount('');
+    setTxnType('BUY');
+    setTxnDate(new Date().toISOString().split('T')[0]);
+    setShowAddTxnForm(false);
+  }, [syncedAsset, txnType, txnAmount, txnDate, addTransaction]);
+
+  const activeAsset = syncedAsset || selectedAsset;
 
   return (
     <>
@@ -57,7 +103,7 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
             <div className={styles.emptyTableState}>
               <div className={styles.emptyIcon}>📂</div>
               <h3>No assets found</h3>
-              <p>You haven't added any assets to this category yet. Import or add manually to see them here.</p>
+              <p>You haven&apos;t added any assets to this category yet. Import or add manually to see them here.</p>
               <AddAssetButton className={styles.addAssetBtnFallback} />
             </div>
           ) : (
@@ -108,13 +154,13 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
       </div>
 
       {/* Slide Out Panel for Asset Details */}
-      {selectedAsset && (
+      {activeAsset && (
         <div className={styles.slideOutOverlay} onClick={closePanel}>
           <div className={styles.slideOutPanel} onClick={e => e.stopPropagation()}>
             <div className={styles.panelHeader}>
               <div>
-                <h2 className={styles.panelTitle}>{selectedAsset.name}</h2>
-                <span className={styles.assetClassBadge}>{selectedAsset.class}</span>
+                <h2 className={styles.panelTitle}>{activeAsset.name}</h2>
+                <span className={styles.assetClassBadge}>{activeAsset.class}</span>
               </div>
               <button className={styles.closeBtn} onClick={closePanel}>×</button>
             </div>
@@ -123,32 +169,79 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
               <div className={styles.detailGrid}>
                 <div className={styles.detailCard}>
                   <div className={styles.detailLabel}>Total Invested</div>
-                  <div className={styles.detailValue}>{formatCurrency(selectedAsset.invested)}</div>
+                  <div className={styles.detailValue}>{formatCurrency(activeAsset.invested)}</div>
                 </div>
                 <div className={styles.detailCard}>
                   <div className={styles.detailLabel}>Current Value</div>
-                  <div className={`${styles.detailValue} ${styles.currentValue}`}>{formatCurrency(selectedAsset.current)}</div>
+                  <div className={`${styles.detailValue} ${styles.currentValue}`}>{formatCurrency(activeAsset.current)}</div>
                 </div>
                 <div className={styles.detailCard}>
                   <div className={styles.detailLabel}>Absolute Return</div>
-                  <div className={`${styles.detailValue} ${selectedAsset.absReturn >= 0 ? styles.positiveText : styles.negativeText}`}>
-                    {selectedAsset.absReturn >= 0 ? '+' : ''}{selectedAsset.absReturn}%
+                  <div className={`${styles.detailValue} ${activeAsset.absReturn >= 0 ? styles.positiveText : styles.negativeText}`}>
+                    {activeAsset.absReturn >= 0 ? '+' : ''}{activeAsset.absReturn}%
                   </div>
                 </div>
                 <div className={styles.detailCard}>
                   <div className={styles.detailLabel}>XIRR</div>
-                  <div className={`${styles.detailValue} ${selectedAsset.xirr >= 0 ? styles.positiveText : styles.negativeText}`}>
-                    {selectedAsset.xirr}%
+                  <div className={`${styles.detailValue} ${activeAsset.xirr >= 0 ? styles.positiveText : styles.negativeText}`}>
+                    {activeAsset.xirr}%
                   </div>
                 </div>
               </div>
 
+              {/* Add Transaction Inline Form */}
+              {showAddTxnForm && (
+                <form className={styles.txnForm} onSubmit={handleAddTransaction}>
+                  <h3 className={styles.txnFormTitle}>New Transaction</h3>
+                  <div className={styles.txnFormGrid}>
+                    <div className={styles.txnFormGroup}>
+                      <label>Type</label>
+                      <select
+                        className={styles.txnFormInput}
+                        value={txnType}
+                        onChange={(e) => setTxnType(e.target.value as 'BUY' | 'SELL')}
+                      >
+                        <option value="BUY">Buy</option>
+                        <option value="SELL">Sell</option>
+                      </select>
+                    </div>
+                    <div className={styles.txnFormGroup}>
+                      <label>Date</label>
+                      <input
+                        type="date"
+                        className={styles.txnFormInput}
+                        value={txnDate}
+                        onChange={(e) => setTxnDate(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className={styles.txnFormGroup} style={{ gridColumn: '1 / -1' }}>
+                      <label>Amount (₹)</label>
+                      <input
+                        type="number"
+                        className={styles.txnFormInput}
+                        placeholder="Enter amount..."
+                        value={txnAmount}
+                        onChange={(e) => setTxnAmount(e.target.value ? Number(e.target.value) : '')}
+                        min="1"
+                        step="any"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.txnFormActions}>
+                    <button type="button" className={styles.txnFormCancel} onClick={() => setShowAddTxnForm(false)}>Cancel</button>
+                    <button type="submit" className={styles.txnFormSubmit}>Save Transaction</button>
+                  </div>
+                </form>
+              )}
+
               <div className={styles.txnHistory}>
                 <h3 className={styles.txnTitle}>Transaction History</h3>
-                <p className={styles.txnSub}>Recent transactions for {selectedAsset.name}</p>
+                <p className={styles.txnSub}>Recent transactions for {activeAsset.name}</p>
                 <ul className={styles.txnList}>
-                  {selectedAsset.transactions && selectedAsset.transactions.length > 0 ? (
-                    selectedAsset.transactions.map(txn => (
+                  {activeAsset.transactions && activeAsset.transactions.length > 0 ? (
+                    activeAsset.transactions.map(txn => (
                       <li key={txn.id} className={styles.txnItem}>
                         <div className={styles.txnLeft}>
                           <span className={txn.type === 'BUY' ? styles.txnTypeBuy : styles.txnTypeSell}>{txn.type}</span>
@@ -170,24 +263,36 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
               </div>
 
               <div className={styles.panelActions}>
-                {selectedAsset.class === 'Equity' || selectedAsset.class === 'Stocks' ? (
+                {activeAsset.class === 'Equity' || activeAsset.class === 'Stocks' ? (
                   <Link href="/dashboard/transactions/contract-note" className={styles.buyBtn} style={{ textDecoration: 'none', textAlign: 'center' }}>
                     + Add Transaction
                   </Link>
-                ) : selectedAsset.class === 'Mutual Fund' ? (
+                ) : activeAsset.class === 'Mutual Fund' ? (
                   <Link href="/dashboard/transactions/mutual-funds" className={styles.buyBtn} style={{ textDecoration: 'none', textAlign: 'center' }}>
                     + Add Transaction
                   </Link>
                 ) : (
-                  <button className={styles.buyBtn}>+ Add Transaction</button>
+                  <button className={styles.buyBtn} onClick={() => setShowAddTxnForm(true)}>+ Add Transaction</button>
                 )}
-                <button className={styles.sellBtn} onClick={() => {
-                  if(confirm('Are you sure you want to completely sell/remove this asset from the dashboard?')) {
-                    removeHolding(selectedAsset.id);
-                    closePanel();
-                  }
-                }}>- Sell / Remove Asset</button>
+                <button className={styles.sellBtn} onClick={() => setShowConfirmDelete(true)}>- Sell / Remove Asset</button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Confirmation Modal */}
+      {showConfirmDelete && activeAsset && (
+        <div className={styles.confirmOverlay} onClick={() => setShowConfirmDelete(false)}>
+          <div className={styles.confirmModal} onClick={e => e.stopPropagation()}>
+            <div className={styles.confirmIcon}>⚠️</div>
+            <h3 className={styles.confirmTitle}>Remove Asset?</h3>
+            <p className={styles.confirmText}>
+              Are you sure you want to completely sell/remove <strong>{activeAsset.name}</strong> from your dashboard? This action cannot be undone.
+            </p>
+            <div className={styles.confirmActions}>
+              <button className={styles.confirmCancel} onClick={() => setShowConfirmDelete(false)}>Cancel</button>
+              <button className={styles.confirmDelete} onClick={handleDeleteConfirm}>Yes, Remove</button>
             </div>
           </div>
         </div>
