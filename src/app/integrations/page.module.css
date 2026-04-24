@@ -1,0 +1,165 @@
+.container {
+  padding-top: 120px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  padding: 0 40px;
+  margin-bottom: 60px;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 40px;
+}
+
+.searchContainer {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 18px 24px;
+  font-size: 1.1rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  color: var(--color-text-primary);
+  backdrop-filter: blur(10px);
+  outline: none;
+  transition: var(--transition-smooth);
+  box-shadow: 0 10px 30px #F3F4F6;
+}
+
+.searchInput:focus {
+  border-color: var(--color-emerald-bright);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+}
+
+.gridContainer {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 40px 100px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* 3D Tile effect */
+.integrationCard {
+  position: relative;
+  background: #F9FAFB;
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 24px;
+  cursor: pointer;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s;
+  animation: slideUp 0.5s ease backwards;
+}
+
+.integrationCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.cardGlow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  filter: blur(50px);
+  opacity: 0.15;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.integrationCard:hover .cardGlow {
+  opacity: 0.3;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.iconWrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: monospace;
+}
+
+.details {
+  flex: 1;
+}
+
+.intName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.intCategory {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.connectBtn {
+  background: transparent;
+  color: var(--color-emerald-bright);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.integrationCard:hover .connectBtn {
+  background: rgba(52, 211, 153, 0.1);
+  border-color: var(--color-emerald-bright);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

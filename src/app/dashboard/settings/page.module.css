@@ -1,0 +1,250 @@
+.settingsView {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.viewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.saveBtn {
+  background: var(--color-emerald);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  transition: all 0.2s;
+}
+
+.saveBtn:hover {
+  background: var(--color-emerald-bright);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.leftCol, .rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settingsCard {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.highlightCard {
+  background: linear-gradient(135deg, var(--color-emerald-glow) 0%, transparent 100%);
+  border: 1px solid var(--glass-border);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 16px;
+}
+
+/* Forms */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputGroup label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.inputField, .selectField {
+  background: var(--color-navy-lighter);
+  border: 1px solid var(--glass-border);
+  padding: 12px 16px;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.inputField:focus, .selectField:focus {
+  border-color: var(--color-emerald);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.selectField option {
+  background: var(--color-navy);
+  color: var(--color-text-primary);
+}
+
+/* Preferences Lists */
+.prefList, .securityList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.prefItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prefInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prefName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.prefDesc {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* Theme Toggle */
+.themeGroup {
+  display: flex;
+  background: var(--color-navy-lighter);
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid var(--glass-border);
+}
+
+.themeBtn {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.themeActive {
+  background: var(--color-emerald);
+  color: white;
+  font-weight: 600;
+}
+
+/* Action Buttons */
+.actionBtn {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.actionBtn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Plan Specifics */
+.planBadge {
+  display: inline-block;
+  background: var(--color-emerald-bright);
+  color: var(--color-navy);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  align-self: flex-start;
+  margin-bottom: 16px;
+}
+
+.planDesc {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.planDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+.planDetails strong {
+  color: var(--color-text-primary);
+}
+
+.billingBtn {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-emerald-bright);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.billingBtn:hover {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,155 @@
+.reportView {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.viewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.exportBtn {
+  background: var(--color-text-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-glow);
+  transition: var(--transition-smooth);
+}
+
+.exportBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.summaryCard {
+  background: var(--color-navy-light);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.highlightCard {
+  border-color: var(--color-text-primary);
+  background: var(--color-navy-lighter);
+}
+
+.summaryLabel {
+  font-size: 0.9rem;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summaryValue {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.summarySub {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.tableCard {
+  background: var(--color-navy-light);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 12px;
+}
+
+.tableHeaderSection {
+  margin-bottom: 24px;
+}
+
+.tableTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 12px 16px;
+  color: var(--color-text-tertiary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+
+.numCol {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.assetName {
+  font-weight: 600;
+}
+
+.positiveText {
+  color: #10B981;
+  font-weight: 600;
+}
+
+.negativeText {
+  color: #EF4444;
+  font-weight: 600;
+}

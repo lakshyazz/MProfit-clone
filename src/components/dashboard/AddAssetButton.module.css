@@ -1,0 +1,233 @@
+.addBtn {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.addBtn:hover {
+  background: var(--color-navy-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.addBtn:active {
+  transform: translateY(1px);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out forwards;
+  padding: 16px; /* Prevent modal from touching screen edges on small viewports */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: var(--color-navy-light);
+  width: 100%;
+  max-width: 520px;
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  overflow: visible; /* Allow sub-modals to render on top */
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.modalTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.closeBtn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-navy-lighter);
+}
+
+.modalForm {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* ─── Row & Field Layout ─── */
+.rowInputs {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.rowInputs > div {
+  flex: 1;
+  min-width: 0; /* Critical: prevents flex children from overflowing */
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0; /* Prevent overflow */
+}
+
+.inputGroup label {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Input / Select / Date – Constrained & Uniform ─── */
+.inputField {
+  background: var(--color-navy-lighter);
+  border: 1px solid var(--glass-border);
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;             /* Fill parent, never exceed it */
+  box-sizing: border-box;  /* Include padding+border in width calc */
+  min-width: 0;            /* Allow shrinking inside flex */
+}
+
+.inputField:focus {
+  border-color: var(--color-emerald);
+  box-shadow: 0 0 0 2px var(--color-emerald-glow);
+  background: var(--color-navy-light);
+}
+
+.inputField option {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+}
+
+/* ─── Footer Buttons ─── */
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--glass-border);
+  flex-shrink: 0;
+}
+
+.cancelBtn {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancelBtn:hover {
+  background: var(--color-navy-light);
+}
+
+.submitBtn {
+  background: var(--color-emerald);
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--color-emerald-glow);
+  transition: all 0.2s;
+}
+
+.submitBtn:hover {
+  background: var(--color-emerald-bright);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ─── Mobile Responsiveness ─── */
+@media (max-width: 540px) {
+  .modalOverlay {
+    padding: 8px;
+  }
+  .modalContent {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+  .modalForm {
+    padding: 16px;
+    gap: 12px;
+  }
+  .modalHeader {
+    padding: 16px;
+  }
+  .rowInputs {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .inputField {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

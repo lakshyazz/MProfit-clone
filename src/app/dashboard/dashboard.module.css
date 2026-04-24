@@ -1,0 +1,48 @@
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-navy);
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll, handle scroll internally */
+}
+
+.pageContent {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+/* Scrollbar styling for page content area */
+.pageContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.pageContent::-webkit-scrollbar-track {
+  background: var(--color-navy-light);
+}
+
+.pageContent::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.pageContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
+  }
+  
+  .pageContent {
+    padding: 20px;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
