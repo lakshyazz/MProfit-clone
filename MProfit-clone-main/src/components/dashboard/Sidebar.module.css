@@ -1,0 +1,181 @@
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background: var(--color-navy-light);
+  border-right: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  position: sticky;
+  top: 0;
+}
+
+.brand {
+  margin-bottom: 40px;
+}
+
+.brand a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brandName {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+}
+
+.betaTag {
+  background: var(--gradient-emerald);
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+.portfolioSelector {
+  margin-bottom: 40px;
+}
+
+.selectorLabel {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.select {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-navy-lighter);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.select option {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+}
+
+.navMenu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.navTitle {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+}
+
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.icon {
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+.navItem:hover {
+  background: var(--color-emerald-glow);
+  color: var(--color-text-primary);
+}
+
+.navItem.active {
+  background: var(--glass-bg);
+  color: var(--color-emerald-bright);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.navItem.active .icon {
+  opacity: 1;
+}
+
+.sidebarFooter {
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.addPortfolioBtn {
+  background: transparent;
+  color: #2563EB;   /* Distinct blue focus */
+  border: 1px dashed var(--glass-border);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+.addPortfolioBtn:hover {
+  background: var(--color-emerald-glow); /* Slight blue tint */
+  border-color: #2563EB;
+}
+
+.importBtn {
+  width: 100%;
+  padding: 14px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.importBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+}
+
+.importIcon {
+  font-size: 1.2rem;
+  line-height: 1;
+}

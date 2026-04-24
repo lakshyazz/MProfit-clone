@@ -1,0 +1,102 @@
+.holdingsView {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.viewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.filterBtn, .exportBtn {
+  background: var(--color-navy-lighter);
+  color: var(--color-text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filterBtn:hover, .exportBtn:hover {
+  background: var(--color-navy-light);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.exportBtn {
+  background: var(--color-navy-lighter);
+}
+
+.exportBtn:hover {
+  background: var(--color-emerald);
+  color: #FFFFFF;
+  border-color: var(--color-emerald);
+}
+
+/* Tabs */
+.tabsRow {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 1px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 12px 24px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.tabBtn:hover {
+  color: var(--color-text-primary);
+}
+
+.tabBtn.active {
+  color: var(--color-emerald-bright);
+  font-weight: 600;
+}
+
+.tabBtn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-emerald-bright);
+  box-shadow: 0 0 8px var(--color-emerald-bright);
+}
+
+.tableSection {
+  display: flex;
+  flex-direction: column;
+}

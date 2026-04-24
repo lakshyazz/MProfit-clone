@@ -1,0 +1,163 @@
+.container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #fff, #8892b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.card {
+  background: rgba(2, 12, 27, 0.4);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.card h2 {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin-bottom: 15px;
+}
+
+.card p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.dropzone {
+  border: 2px dashed rgba(100, 255, 218, 0.3);
+  border-radius: 12px;
+  padding: 50px 20px;
+  text-align: center;
+  background: rgba(100, 255, 218, 0.02);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.dropzone:hover {
+  border-color: rgba(100, 255, 218, 0.8);
+  background: rgba(100, 255, 218, 0.05);
+}
+
+.dropIcon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.dropText {
+  color: var(--accent-color);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.dropSub {
+  color: rgba(136, 146, 176, 0.6);
+  font-size: 0.8rem;
+}
+
+.brokerList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.brokerItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(10, 25, 47, 0.5);
+  border: 1px solid rgba(136, 146, 176, 0.1);
+  border-radius: 10px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.brokerItem:hover {
+  transform: translateX(5px);
+  border-color: rgba(100, 255, 218, 0.4);
+}
+
+.brokerInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.brokerLogo {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-navy);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--accent-color);
+  box-shadow: inset 0 0 10px rgba(100, 255, 218, 0.1);
+}
+
+.brokerName {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.brokerStatus {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.connectBtn {
+  padding: 8px 16px;
+  background: rgba(100, 255, 218, 0.1);
+  color: var(--accent-color);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.connectBtn:hover {
+  background: var(--accent-color);
+  color: var(--bg-navy);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
