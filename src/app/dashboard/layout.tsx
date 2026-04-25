@@ -1,6 +1,7 @@
 import Sidebar from '@/components/dashboard/Sidebar';
 import Topbar from '@/components/dashboard/Topbar';
 import BottomNav from '@/components/dashboard/BottomNav';
+import BackgroundWebGL from '@/components/dashboard/BackgroundWebGL';
 import styles from './dashboard.module.css';
 
 export const metadata = {
@@ -14,6 +15,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className={styles.dashboardContainer}>
+      <BackgroundWebGL />
       <Sidebar />
       <main className={styles.mainContent}>
         <Topbar />

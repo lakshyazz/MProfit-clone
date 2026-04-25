@@ -1,30 +1,33 @@
 :root {
-  /* Brand Colors - Shifted to strict Minimalist Light mode */
-  --color-navy: #FFFFFF; /* Main background now white */
-  --color-navy-light: #F9FAFB; /* Slightly off-white for panels */
-  --color-navy-lighter: #F3F4F6;
-  --color-emerald: #000000; /* Primary brand color is now pure black */
-  --color-emerald-glow: rgba(0, 0, 0, 0.05); /* Subtle dark glow instead of bright blue */
-  --color-emerald-bright: #111827; /* Dark gray for secondary accents */
+  /* Elite Minimalist Palette - Precision HSL */
+  --color-navy: hsl(0, 0%, 100%); /* Pure white base */
+  --color-navy-light: hsl(0, 0%, 98%); /* Zinc 50 */
+  --color-navy-lighter: hsl(0, 0%, 96%); /* Zinc 100 */
+  
+  --color-emerald: hsl(0, 0%, 4%); /* Zinc 950 - Purest dark accent */
+  --color-emerald-glow: hsla(0, 0%, 4%, 0.03); 
+  --color-emerald-bright: hsl(0, 0%, 15%); /* Zinc 800 */
   
   /* Text Colors */
-  --color-text-primary: #111827; /* Deep Charcoal Text */
-  --color-text-secondary: #6B7280; /* Muted gray text */
-  --color-text-tertiary: #9CA3AF; /* Light gray text */
+  --color-text-primary: hsl(0, 0%, 4%);
+  --color-text-secondary: hsl(0, 0%, 32%); /* Zinc 600 */
+  --color-text-tertiary: hsl(0, 0%, 63%); /* Zinc 400 */
 
-  /* Gradients & Shadows - Stripped down for minimalist UI */
-  --gradient-emerald: linear-gradient(to right, #111827, #374151); /* Gradient from dark to medium gray */
-  --glass-bg: rgba(255, 255, 255, 0.8); /* Translucent white */
-  --glass-border: #E5E7EB; /* Very subtle light gray border */
-  --shadow-glow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Gradients & Shadows */
+  --gradient-emerald: linear-gradient(135deg, hsl(0, 0%, 4%), hsl(0, 0%, 20%));
+  --glass-bg: hsla(0, 0%, 100%, 0.7);
+  --glass-border: hsla(0, 0%, 4%, 0.08);
+  --shadow-glow: 0 12px 40px -12px hsla(0, 0%, 0%, 0.08);
+  --shadow-inner: inset 0 2px 4px hsla(0, 0%, 0%, 0.02);
 
   /* Form & Component standards */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
 
   /* Animation */
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-liquid: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html {
@@ -81,19 +84,23 @@ a {
 
 /* Dark Theme Overrides */
 body.dark-theme, body.dark-theme * {
-  --color-navy: #0B0F19;
-  --color-navy-light: #111827;
-  --color-navy-lighter: #1F2937;
-  --color-text-primary: #F9FAFB;
-  --color-text-secondary: #9CA3AF;
-  --color-text-tertiary: #6B7280;
-  --glass-bg: rgba(17, 24, 39, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --shadow-glow: 0 4px 24px rgba(0, 0, 0, 0.5);
-  --color-emerald: #2563EB;
-  --color-emerald-bright: #60A5FA;
-  --color-emerald-glow: rgba(37, 99, 235, 0.15);
-  --gradient-emerald: linear-gradient(to right, #F9FAFB, #D1D5DB);
+  --color-navy: hsl(0, 0%, 2%); /* Almost pure black */
+  --color-navy-light: hsl(0, 0%, 6%);
+  --color-navy-lighter: hsl(0, 0%, 9%);
+  
+  --color-text-primary: hsl(0, 0%, 98%);
+  --color-text-secondary: hsl(0, 0%, 63%);
+  --color-text-tertiary: hsl(0, 0%, 40%);
+  
+  --glass-bg: hsla(0, 0%, 6%, 0.7);
+  --glass-border: hsla(0, 0%, 100%, 0.08);
+  --shadow-glow: 0 12px 40px -12px hsla(0, 0%, 0%, 0.8);
+  --shadow-inner: inset 0 2px 4px hsla(0, 0%, 100%, 0.02);
+  
+  --color-emerald: hsl(0, 0%, 100%);
+  --color-emerald-bright: hsl(0, 0%, 80%);
+  --color-emerald-glow: hsla(0, 0%, 100%, 0.05);
+  --gradient-emerald: linear-gradient(135deg, hsl(0, 0%, 98%), hsl(0, 0%, 63%));
 }
 
 body.dark-theme {
@@ -105,4 +112,5 @@ body.dark-theme .glass-panel {
   background: var(--glass-bg);
   border-color: var(--glass-border);
   box-shadow: var(--shadow-glow);
+  backdrop-filter: blur(20px);
 }

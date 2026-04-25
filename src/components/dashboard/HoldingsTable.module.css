@@ -38,42 +38,13 @@
 }
 
 .tableWrapper {
-  overflow-x: auto;
+  /* Removed overflow to prevent shadow clipping */
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-
-.table th {
-  padding: 16px 20px;
-  color: var(--color-text-secondary);
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid var(--glass-border);
-}
-
-.table td {
-  padding: 20px;
-  border-bottom: 1px solid var(--glass-border);
-  color: var(--color-text-secondary);
-  font-size: 1rem;
-  transition: background 0.2s ease;
-}
-
+/* --------- CARDS GRID & HOVER EFFECTS --------- */
 .numCol {
   text-align: right;
   font-variant-numeric: tabular-nums;
-}
-
-.assetName {
-  font-weight: 700;
-  color: var(--color-text-primary) !important;
-  font-size: 1.05rem;
 }
 
 .assetClassBadge {
@@ -129,12 +100,90 @@
   font-size: 0.9rem;
 }
 
-.interactiveRow {
-  cursor: pointer;
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  width: 100%;
 }
 
-.interactiveRow:hover td {
-  background: var(--color-navy-light);
+.holdingCard {
+  background: var(--color-navy-lighter);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  /* Removed overflow: hidden so 3D children can actually pop out visually */
+}
+
+.holdingCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  z-index: 10;
+}
+
+/* 3D effect on children */
+.holdingCard:hover > * {
+  transform: translateZ(20px);
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.cardAssetName {
+  font-weight: 800;
+  color: var(--color-text-primary);
+  font-size: 1.15rem;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--glass-border);
+}
+
+.cardRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cardLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardValue {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 /* Slide Out Panel Styles */
@@ -402,42 +451,8 @@
 }
 
 @media (max-width: 768px) {
-  .table thead {
-    display: none;
-  }
-  .table, .table tbody, .table tr, .table td {
-    display: block;
-    width: 100%;
-  }
-  .table tr {
-    margin-bottom: 16px;
-    background: var(--color-navy-light);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-  }
-  .table td {
-    border-bottom: none;
-    padding: 8px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: right;
-  }
-  .table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-  }
-  .numCol {
-    text-align: right;
-  }
-  .gainWrapper {
-    align-items: flex-end;
+  .cardsGrid {
+    grid-template-columns: 1fr;
   }
   .tableContainer {
     padding: 16px;

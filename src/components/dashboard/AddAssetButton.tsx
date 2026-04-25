@@ -58,13 +58,29 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
     setActiveSubModal(null);
   };
 
+  const [dropdownOptions, setDropdownOptions] = useState<Record<string, string[]>>({});
+  const [dropdownValues, setDropdownValues] = useState<Record<string, string>>({});
+
   const handleDropdownAction = (e: React.ChangeEvent<HTMLSelectElement>, targetModal: string) => {
     if (e.target.value === 'ADD_NEW') {
       setActiveSubModal(targetModal);
       e.target.value = ''; // Reset select to prevent stuck state
+    } else {
+      setDropdownValues(prev => ({ ...prev, [targetModal]: e.target.value }));
     }
   };
 
+  const handleSubModalSave = (modalId: string, name: string, initAmount: number, dateStr: string) => {
+    setDropdownOptions(prev => ({
+      ...prev,
+      [modalId]: [...(prev[modalId] || []), name]
+    }));
+    setDropdownValues(prev => ({
+      ...prev,
+      [modalId]: name
+    }));
+    if (initAmount) setAmount(initAmount);
+  };
 
 
   const renderDynamicFields = () => {
@@ -79,9 +95,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
                </div>
                <div className={styles.inputGroup}>
                   <label>Broker</label>
-                  <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_broker')}>
+                  <select className={styles.inputField} value={dropdownValues["add_broker"] || ""} onChange={(e) => handleDropdownAction(e, 'add_broker')}>
                      <option>Select Broker</option>
-                     <option value="ADD_NEW">+ Add New</option>
+                     {(dropdownOptions["add_broker"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                   </select>
                </div>
             </div>
@@ -197,9 +214,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
             </div>
             <div className={styles.inputGroup}>
               <label>Fund Name</label>
-               <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, assetClass === 'sif' ? 'add_sif' : 'add_mutual_fund')} required>
+               <select className={styles.inputField} value={dropdownValues[assetClass === 'sif' ? 'add_sif' : 'add_mutual_fund'] || ''} onChange={(e) => handleDropdownAction(e, assetClass === 'sif' ? 'add_sif' : 'add_mutual_fund')} required>
                   <option value="">Select Fund</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions[assetClass === 'sif' ? 'add_sif' : 'add_mutual_fund'] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                </select>
             </div>
             <div className={styles.rowInputs}>
@@ -269,9 +287,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
               </div>
               <div className={styles.inputGroup}>
                 <label>Bank Account</label>
-                <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_bank')} required>
+                <select className={styles.inputField} value={dropdownValues["add_bank"] || ""} onChange={(e) => handleDropdownAction(e, 'add_bank')} required>
                   <option value="">Select Account</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions["add_bank"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                 </select>
               </div>
             </div>
@@ -311,9 +330,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
               </div>
               <div className={styles.inputGroup}>
                 <label>Plan / Scheme</label>
-                <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_insurance')} required>
+                <select className={styles.inputField} value={dropdownValues["add_insurance"] || ""} onChange={(e) => handleDropdownAction(e, 'add_insurance')} required>
                   <option value="">Select Plan</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions["add_insurance"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                 </select>
               </div>
             </div>
@@ -403,9 +423,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
               </div>
               <div className={styles.inputGroup}>
                 <label>Asset Name</label>
-                <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_pe')} required>
+                <select className={styles.inputField} value={dropdownValues["add_pe"] || ""} onChange={(e) => handleDropdownAction(e, 'add_pe')} required>
                   <option value="">Select Asset</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions["add_pe"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                 </select>
               </div>
             </div>
@@ -455,9 +476,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
               </div>
               <div className={styles.inputGroup}>
                 <label>Asset Name</label>
-                <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_fd')} required>
+                <select className={styles.inputField} value={dropdownValues["add_fd"] || ""} onChange={(e) => handleDropdownAction(e, 'add_fd')} required>
                   <option value="">Select Asset</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions["add_fd"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                 </select>
               </div>
             </div>
@@ -565,9 +587,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
                </div>
                <div className={styles.inputGroup}>
                   <label>Broker</label>
-                  <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_broker')}>
+                  <select className={styles.inputField} value={dropdownValues["add_broker"] || ""} onChange={(e) => handleDropdownAction(e, 'add_broker')}>
                      <option>Select Broker</option>
-                     <option value="ADD_NEW">+ Add New</option>
+                     {(dropdownOptions["add_broker"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                   </select>
                </div>
             </div>
@@ -583,9 +606,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
             </div>
             <div className={styles.inputGroup}>
                <label>Asset Name</label>
-               <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_traded_bond')} required>
+               <select className={styles.inputField} value={dropdownValues["add_traded_bond"] || ""} onChange={(e) => handleDropdownAction(e, 'add_traded_bond')} required>
                   <option value="">Select Asset</option>
-                  <option value="ADD_NEW">+ Add New</option>
+                  {(dropdownOptions["add_traded_bond"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                </select>
             </div>
             <div className={styles.rowInputs}>
@@ -703,9 +727,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
                  </div>
                   <div className={styles.inputGroup}>
                    <label>Lot Description</label>
-                   <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_gold')}>
+                   <select className={styles.inputField} value={dropdownValues["add_gold"] || ""} onChange={(e) => handleDropdownAction(e, 'add_gold')}>
                      <option>Select Lot</option>
-                     <option value="ADD_NEW">+ Add New</option>
+                     {(dropdownOptions["add_gold"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                    </select>
                  </div>
               </div>
@@ -747,8 +772,9 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
                  </div>
                   <div className={styles.inputGroup}>
                    <label>Title</label>
-                   <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_art')}>
+                   <select className={styles.inputField} value={dropdownValues["add_art"] || ""} onChange={(e) => handleDropdownAction(e, 'add_art')}>
                      <option>Select Title</option>
+                     {(dropdownOptions["add_art"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
                      {assetClass === 'art' && <option value="ADD_NEW">+ Add New</option>}
                    </select>
                  </div>
@@ -780,9 +806,10 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
                  </div>
                   <div className={styles.inputGroup}>
                    <label>Property Name</label>
-                   <select className={styles.inputField} onChange={(e) => handleDropdownAction(e, 'add_property')}>
+                   <select className={styles.inputField} value={dropdownValues["add_property"] || ""} onChange={(e) => handleDropdownAction(e, 'add_property')}>
                      <option>Select Property</option>
-                     <option value="ADD_NEW">+ Add New</option>
+                     {(dropdownOptions["add_property"] || []).map(opt => <option key={opt} value={opt}>{opt}</option>)}
+<option value="ADD_NEW">+ Add New</option>
                    </select>
                  </div>
               </div>
@@ -1090,7 +1117,7 @@ export default function AddAssetButton({ className, text = "+ Add Asset" }: AddA
           </div>
           
           {/* Sub-modal Overlay Engine */}
-          <SubModal activeSubModal={activeSubModal} setActiveSubModal={setActiveSubModal} />
+          <SubModal activeSubModal={activeSubModal} setActiveSubModal={setActiveSubModal} onSave={handleSubModalSave} />
         </div>
       )}
     </>

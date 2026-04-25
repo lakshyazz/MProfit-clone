@@ -5,10 +5,13 @@ import { useHoldings } from '@/context/HoldingsContext';
 interface SubModalProps {
   activeSubModal: string | null;
   setActiveSubModal: (modal: string | null) => void;
+  onSave?: (modalId: string, name: string, amount: number, date: string) => void;
 }
 
-export default function SubModal({ activeSubModal, setActiveSubModal }: SubModalProps) {
-  const { addHolding } = useHoldings();
+export default function SubModal({ activeSubModal, setActiveSubModal, onSave }: SubModalProps) {
+  const [name, setName] = React.useState('');
+  const [amount, setAmount] = React.useState<number | ''>('');
+  const [date, setDate] = React.useState(new Date().toISOString().split('T')[0]);
 
   if (!activeSubModal) return null;
 
@@ -16,21 +19,64 @@ export default function SubModal({ activeSubModal, setActiveSubModal }: SubModal
   let inputs = <></>;
 
   const handleSave = () => {
-    const className = activeSubModal.includes('stock') ? 'Equity' : 
-                      activeSubModal.includes('mutual_fund') ? 'Mutual Fund' : 
-                      activeSubModal.includes('bank') ? 'Fixed Income' : 
-                      activeSubModal.includes('property') ? 'Real Estate' : 'Other';
+    const finalName = name || `New ${subTitle.replace('Add ', '')}`;
+    const finalAmount = amount === '' ? 0 : Number(amount);
+
+    if (onSave) {
+      onSave(activeSubModal, finalName, finalAmount, date);
+    }
     
-    addHolding({
-      name: `New ${subTitle.replace('Add ', '')}`,
-      class: className,
-      invested: 0,
-      current: 0
-    });
+    // Reset
+    setName('');
+    setAmount('');
     setActiveSubModal(null);
   };
 
   switch (activeSubModal) {
+    case 'add_bank':
+    case 'add_fd':
+    case 'add_pe':
+    case 'add_property':
+    case 'add_stock':
+    case 'add_traded_bond':
+    case 'add_mutual_fund':
+      subTitle = `Add New ${activeSubModal.split('_').pop()?.toUpperCase()}`;
+      inputs = (
+        <>
+          <div className={styles.inputGroup}>
+            <label>Name</label>
+            <input 
+              type="text" 
+              className={styles.inputField} 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter name..."
+              required 
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Initial Investment (₹)</label>
+            <input 
+              type="number" 
+              className={styles.inputField} 
+              value={amount}
+              onChange={(e) => setAmount(e.target.value ? Number(e.target.value) : '')}
+              placeholder="0"
+              required 
+            />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Investment Date</label>
+            <input 
+              type="date" 
+              className={styles.inputField} 
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+        </>
+      );
+      break;
     case 'add_broker':
     case 'add_agent':
     case 'add_seller':
@@ -40,97 +86,25 @@ export default function SubModal({ activeSubModal, setActiveSubModal }: SubModal
         <>
           <div className={styles.inputGroup}>
             <label>Name</label>
-            <input type="text" className={styles.inputField} required />
-          </div>
-          <div className={styles.inputGroup}>
-            <label>Address</label>
-            <input type="text" className={styles.inputField} />
-          </div>
-        </>
-      );
-      break;
-    case 'add_stock':
-    case 'add_traded_bond':
-    case 'add_property':
-      subTitle = `Add ${activeSubModal.split('_')[1].toUpperCase()}`;
-      inputs = (
-        <>
-           {activeSubModal !== 'add_stock' && activeSubModal !== 'add_traded_bond' && (
-              <div style={{ marginBottom: "0.5rem" }}>
-                 <label><input type="checkbox" /> New Asset</label>
-              </div>
-           )}
-          <div className={styles.inputGroup}>
-            <label>{activeSubModal === 'add_property' ? 'Address' : 'Select Asset'}</label>
-            <input type="text" className={styles.inputField} required />
-          </div>
-          {activeSubModal === 'add_property' && (
-             <div className={styles.rowInputs}>
-                <div className={styles.inputGroup}>
-                   <label>Seller</label>
-                   <select className={styles.inputField}><option>Select</option></select>
-                </div>
-                <div className={styles.inputGroup}>
-                   <label>Agent/Broker</label>
-                   <select className={styles.inputField}><option>Select</option></select>
-                </div>
-             </div>
-          )}
-        </>
-      );
-      break;
-    case 'add_mutual_fund':
-    case 'add_sif':
-      subTitle = `Add Fund`;
-      inputs = (
-        <>
-          <div className={styles.rowInputs}>
-             <div className={styles.inputGroup}>
-                <label>Select Asset</label>
-                <input type="text" className={styles.inputField} required />
-             </div>
-             <div className={styles.inputGroup}>
-                <label>Folio No</label>
-                <input type="text" className={styles.inputField} required />
-             </div>
-          </div>
-          <div className={styles.rowInputs}>
-             {activeSubModal !== 'add_sif' && (
-                <div className={styles.inputGroup}>
-                   <label>Type</label>
-                   <select className={styles.inputField}><option>Equity</option><option>Debt</option></select>
-                </div>
-             )}
-             <div className={styles.inputGroup}>
-               <label>Lock-in Period</label>
-               <div style={{paddingTop: '4px'}}><input type="checkbox" /></div>
-             </div>
-          </div>
-           <div className={styles.inputGroup}>
-              <label>Agent/Broker</label>
-              <select className={styles.inputField}><option>Select</option></select>
-           </div>
-        </>
-      );
-      break;
-     case 'add_bank':
-      subTitle = `Add Bank`;
-      inputs = (
-        <>
-          <div className={styles.inputGroup}>
-            <label>Select Bank</label>
-            <select className={styles.inputField}><option>HDFC Bank</option><option>SBI</option></select>
-          </div>
-          <div className={styles.inputGroup}>
-            <label>Account No</label>
-            <input type="text" className={styles.inputField} required />
+            <input type="text" className={styles.inputField} value={name} onChange={e => setName(e.target.value)} required />
           </div>
         </>
       );
       break;
     default:
       subTitle = "Add Entity";
-      inputs = <div className={styles.inputGroup}><label>Name</label><input type="text" className={styles.inputField} /></div>;
+      inputs = (
+        <>
+          <div className={styles.inputGroup}>
+            <label>Name</label>
+            <input type="text" className={styles.inputField} value={name} onChange={e => setName(e.target.value)} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Amount (₹)</label>
+            <input type="number" className={styles.inputField} value={amount} onChange={e => setAmount(e.target.value ? Number(e.target.value) : '')} />
+          </div>
+        </>
+      );
   }
 
   return (

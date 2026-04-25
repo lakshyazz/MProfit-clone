@@ -5,8 +5,13 @@ import Link from 'next/link';
 import styles from './HoldingsTable.module.css';
 import AddAssetButton from './AddAssetButton';
 import { useHoldings, HoldingData } from '@/context/HoldingsContext';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 
-
+const tableRowVariants: Variants = {
+  hidden: { opacity: 0, x: -10 },
+  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 100 } },
+  exit: { opacity: 0, x: 10 }
+};
 
 const formatCurrency = (val: number) => 
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
@@ -113,48 +118,68 @@ export default function HoldingsTable({ title = "Top Holdings", hideViewAll = fa
               <AddAssetButton className={styles.addAssetBtnFallback} />
             </div>
           ) : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Asset Name</th>
-                  <th>Asset Class</th>
-                  <th className={styles.numCol}>Invested</th>
-                  <th className={styles.numCol}>Current Value</th>
-                  <th className={styles.numCol}>Gain</th>
-                  <th className={styles.numCol}>XIRR</th>
-                </tr>
-              </thead>
-              <tbody>
+            <motion.div 
+              className={styles.cardsGrid}
+              initial="hidden"
+              animate="show"
+              variants={{
+                show: {
+                  transition: { staggerChildren: 0.05 }
+                }
+              }}
+            >
+              <AnimatePresence>
                 {displayData.map((hd) => {
                   const gainVal = hd.current - hd.invested;
                   const isPositive = gainVal >= 0;
 
                   return (
-                    <tr key={hd.id} onClick={() => handleRowClick(hd)} className={styles.interactiveRow}>
-                      <td data-label="Asset" className={styles.assetName}>{hd.name}</td>
-                      <td data-label="Class">
+                    <motion.div 
+                      key={hd.id} 
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+                        exit: { opacity: 0, scale: 0.9 }
+                      }}
+                      exit="exit"
+                      onClick={() => handleRowClick(hd)} 
+                      className={styles.holdingCard}
+                    >
+                      <div className={styles.cardHeader}>
+                        <h4 className={styles.cardAssetName}>{hd.name}</h4>
                         <span className={styles.assetClassBadge}>{hd.class}</span>
-                      </td>
-                      <td data-label="Invested" className={styles.numCol}>{formatCurrency(hd.invested)}</td>
-                      <td data-label="Current Value" className={`${styles.numCol} ${styles.currentValue}`}>{formatCurrency(hd.current)}</td>
-                      <td data-label="Gain / Loss" className={styles.numCol}>
-                        <div className={styles.gainWrapper}>
-                          <span className={isPositive ? styles.positiveText : styles.negativeText}>
-                            {isPositive ? '+' : ''}{formatCurrency(gainVal)}
-                          </span>
-                          <span className={styles.subText}>({isPositive ? '+' : ''}{hd.absReturn}%)</span>
+                      </div>
+                      
+                      <div className={styles.cardBody}>
+                        <div className={styles.cardRow}>
+                          <span className={styles.cardLabel}>Invested</span>
+                          <span className={`${styles.numCol} ${styles.cardValue}`}>{formatCurrency(hd.invested)}</span>
                         </div>
-                      </td>
-                      <td data-label="XIRR" className={styles.numCol}>
-                        <span className={isPositive ? styles.positiveBadge : styles.negativeBadge}>
-                          {hd.xirr}%
-                        </span>
-                      </td>
-                    </tr>
+                        <div className={styles.cardRow}>
+                          <span className={styles.cardLabel}>Current Value</span>
+                          <span className={`${styles.numCol} ${styles.currentValue} ${styles.cardValue}`}>{formatCurrency(hd.current)}</span>
+                        </div>
+                        <div className={styles.cardRow}>
+                          <span className={styles.cardLabel}>Gain / Loss</span>
+                          <div className={styles.gainWrapper}>
+                            <span className={isPositive ? styles.positiveText : styles.negativeText}>
+                              {isPositive ? '+' : ''}{formatCurrency(gainVal)}
+                            </span>
+                            <span className={styles.subText}>({isPositive ? '+' : ''}{hd.absReturn}%)</span>
+                          </div>
+                        </div>
+                        <div className={styles.cardRow}>
+                          <span className={styles.cardLabel}>XIRR</span>
+                          <span className={isPositive ? styles.positiveBadge : styles.negativeBadge}>
+                            {hd.xirr}%
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
                   );
                 })}
-              </tbody>
-            </table>
+              </AnimatePresence>
+            </motion.div>
           )}
         </div>
       </div>

@@ -5,6 +5,7 @@ import HoldingsTable from '@/components/dashboard/HoldingsTable';
 import { useHoldings } from '@/context/HoldingsContext';
 import AddAssetButton from '@/components/dashboard/AddAssetButton';
 import { useUserState } from '@/hooks/useUserState';
+import AllocationChart from '@/components/dashboard/AllocationChart';
 import styles from './page.module.css';
 
 function HoldingsContent() {
@@ -104,6 +105,8 @@ function HoldingsContent() {
           </button>
         ))}
       </div>
+
+
 
       <div className={styles.tableSection}>
         <HoldingsTable 

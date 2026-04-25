@@ -64,6 +64,21 @@
   flex: 1;
 }
 
+.glowingBadge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10B981;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
 .featureInfo h3 {
   font-size: 2rem;
   font-weight: 800;
@@ -101,6 +116,15 @@
   left: 0;
   color: #10B981;
   font-weight: 800;
+}
+
+.featureVisual {
+  flex: 0 0 450px;
+  height: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ═══════════════════════════════════════════════
@@ -549,6 +573,19 @@
   padding: 80px 24px 100px;
   max-width: 650px;
   margin: 0 auto;
+  position: relative;
+}
+
+.ctaGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .bottomCta h2 {

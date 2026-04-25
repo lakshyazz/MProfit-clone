@@ -6,9 +6,24 @@ import styles from './page.module.css';
 import { Suspense, useState } from 'react';
 import { useUserState } from '@/hooks/useUserState';
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
+import CountUp from 'react-countup';
 
 import AddAssetButton from '@/components/dashboard/AddAssetButton';
 import { useHoldings } from '@/context/HoldingsContext';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 15 } }
+};
 
 function DashboardContent() {
   const { isNewUser, mounted } = useUserState();
@@ -86,8 +101,13 @@ function DashboardContent() {
 
   // Existing Populated Dashboard
   return (
-    <div className={styles.todayView}>
-      <header className={styles.viewHeader}>
+    <motion.div 
+      className={styles.todayView}
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+    >
+      <motion.header className={styles.viewHeader} variants={itemVariants}>
         <div>
           <h1 className={styles.pageTitle}>Today&apos;s Overview</h1>
           <p className={styles.pageSubtitle}>As of {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })} · Market Open</p>
@@ -95,35 +115,41 @@ function DashboardContent() {
         <div className={styles.headerActions}>
           <button className={styles.syncBtn} onClick={() => alert("Data synced successfully with brokers!")}>⟳ Sync Data</button>
         </div>
-      </header>
+      </motion.header>
 
       {/* Top Metrics Row */}
-      <div className={styles.metricsGrid}>
+      <motion.div className={styles.metricsGrid} variants={itemVariants}>
         <div className={`glass-panel ${styles.metricCard}`}>
           <div className={styles.metricLabel}>Total Net Worth</div>
-          <div className={styles.metricValue}>₹ {formatNum(totalCurrent)}</div>
+          <div className={styles.metricValue}>
+            ₹ <CountUp end={totalCurrent} duration={1.5} separator="," />
+          </div>
           <div className={`${styles.metricChange} ${totalGain >= 0 ? styles.positive : styles.negative}`}>
             {totalGain >= 0 ? '+' : ''}₹ {formatNum(totalGain)} ({Math.abs(Number(gainPct))}%) All-Time
           </div>
         </div>
         <div className={`glass-panel ${styles.metricCard}`}>
           <div className={styles.metricLabel}>Total Invested</div>
-          <div className={styles.metricValue}>₹ {formatNum(totalInvested)}</div>
+          <div className={styles.metricValue}>
+            ₹ <CountUp end={totalInvested} duration={1.5} separator="," />
+          </div>
           <div className={styles.metricMeta}>
             Across {holdings.length} assets
           </div>
         </div>
         <div className={`glass-panel ${styles.metricCard}`}>
           <div className={styles.metricLabel}>Overall XIRR</div>
-          <div className={styles.metricValue}>{overallXirr}%</div>
+          <div className={styles.metricValue}>
+            <CountUp end={Number(overallXirr)} duration={1.5} decimals={1} />%
+          </div>
           <div className={`${styles.metricChange} ${Number(overallXirr) >= 17.3 ? styles.positive : styles.negative}`}>
             {Number(overallXirr) >= 17.3 ? '+' : ''}{(Number(overallXirr) - 17.3).toFixed(1)}% vs Nifty 50
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Middle Row: Charts & Benchmarks */}
-      <div className={styles.chartsRow}>
+      <motion.div className={styles.chartsRow} variants={itemVariants}>
         <div className={styles.allocationCol}>
           <AllocationChart onCategoryClick={setFilterCategory} activeCategory={filterCategory} />
         </div>
@@ -135,21 +161,39 @@ function DashboardContent() {
               <div className={styles.benchBar}>
                 <div className={styles.benchLabel}>Your Portfolio</div>
                 <div className={styles.benchTrack}>
-                  <div className={styles.benchFill} style={{ width: portfolioWidth, background: 'var(--color-emerald-bright)' }}></div>
+                  <motion.div 
+                    className={styles.benchFill} 
+                    style={{ background: 'var(--color-emerald-bright)' }}
+                    initial={{ width: 0 }}
+                    animate={{ width: portfolioWidth }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
                 </div>
                 <div className={styles.benchValue}>{overallXirr}%</div>
               </div>
               <div className={styles.benchBar}>
                 <div className={styles.benchLabel}>Nifty 50 (TRI)</div>
                 <div className={styles.benchTrack}>
-                  <div className={styles.benchFill} style={{ width: niftyWidth, background: '#3B82F6' }}></div>
+                  <motion.div 
+                    className={styles.benchFill} 
+                    style={{ background: '#3B82F6' }}
+                    initial={{ width: 0 }}
+                    animate={{ width: niftyWidth }}
+                    transition={{ duration: 1, delay: 0.6 }}
+                  />
                 </div>
                 <div className={styles.benchValue}>17.3%</div>
               </div>
               <div className={styles.benchBar}>
                 <div className={styles.benchLabel}>Sensex</div>
                 <div className={styles.benchTrack}>
-                  <div className={styles.benchFill} style={{ width: sensexWidth, background: '#8B5CF6' }}></div>
+                  <motion.div 
+                    className={styles.benchFill} 
+                    style={{ background: '#F59E0B' }}
+                    initial={{ width: 0 }}
+                    animate={{ width: sensexWidth }}
+                    transition={{ duration: 1, delay: 0.7 }}
+                  />
                 </div>
                 <div className={styles.benchValue}>16.8%</div>
               </div>
@@ -161,14 +205,14 @@ function DashboardContent() {
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Bottom Row: Holdings */}
-      <div className={styles.holdingsRow}>
+      <motion.div className={styles.holdingsRow} variants={itemVariants}>
         <HoldingsTable filterCategory={filterCategory} />
-      </div>
+      </motion.div>
 
-    </div>
+    </motion.div>
   );
 }
 
