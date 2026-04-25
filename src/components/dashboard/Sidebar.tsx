@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styles from './Sidebar.module.css';
 import AddPortfolioModal from './AddPortfolioModal';
 import { useHoldings } from '@/context/HoldingsContext';
@@ -10,6 +10,19 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
   const { portfolios, activePortfolio, setActivePortfolio, addPortfolio, removePortfolio } = useHoldings();
+  
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <aside className={styles.sidebar}>
@@ -19,26 +32,60 @@ export default function Sidebar() {
         </Link>
       </div>
 
-      <div className={styles.portfolioSelector}>
+      <div className={styles.portfolioSelector} ref={dropdownRef}>
         <div className={styles.selectorLabel}>ACTIVE PORTFOLIO</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <select 
-            className={styles.select}
-            value={activePortfolio}
-            onChange={(e) => setActivePortfolio(e.target.value)}
-          >
-            {portfolios.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-          {activePortfolio !== 'Family Consolidated' && (
-            <button 
-              onClick={() => removePortfolio(activePortfolio)}
-              style={{ background: 'transparent', border: 'none', color: '#EF4444', cursor: 'pointer', fontSize: '1.2rem' }}
-              title="Delete Portfolio"
-            >
-              ×
-            </button>
-          )}
+        
+        <div 
+          className={styles.customSelectTrigger}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          <span>{activePortfolio}</span>
+          <span className={styles.chevron}>{isDropdownOpen ? '▲' : '▼'}</span>
         </div>
+
+        {isDropdownOpen && (
+          <div className={styles.customDropdown}>
+            <div className={styles.dropdownList}>
+              {portfolios.map(p => (
+                <div 
+                  key={p} 
+                  className={`${styles.dropdownItem} ${p === activePortfolio ? styles.activeDropdownItem : ''}`}
+                  onClick={() => {
+                    setActivePortfolio(p);
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  <span className={styles.dropdownItemName}>{p}</span>
+                  {p !== 'Family Consolidated' && (
+                    <button 
+                      className={styles.deletePortfolioBtn}
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent selecting the item while deleting
+                        removePortfolio(p);
+                      }}
+                      title="Delete Portfolio"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <div className={styles.dropdownFooter}>
+              <button 
+                className={styles.dropdownAddBtn}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsDropdownOpen(false);
+                  setIsPortfolioModalOpen(true);
+                }}
+              >
+                + Add Member / Portfolio
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <nav className={styles.navMenu}>
@@ -71,9 +118,6 @@ export default function Sidebar() {
 
       <div className={styles.sidebarFooter}>
         <div className={styles.navSection}>
-          <button className={styles.addPortfolioBtn} onClick={() => setIsPortfolioModalOpen(true)}>
-             + Add Portfolio
-          </button>
           <Link href="/dashboard/accountant" className={`${styles.navItem} ${pathname === '/dashboard/accountant' ? styles.active : ''}`}>
              Accountant Portal
           </Link>

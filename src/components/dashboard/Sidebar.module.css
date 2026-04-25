@@ -34,10 +34,8 @@
   font-weight: 800;
   padding: 2px 6px;
   border-radius: 8px;
-  letter-spacing: 0.5px;
-}
-
 .portfolioSelector {
+  position: relative;
   margin-bottom: 40px;
 }
 
@@ -49,7 +47,7 @@
   margin-bottom: 12px;
 }
 
-.select {
+.customSelectTrigger {
   width: 100%;
   padding: 12px;
   background: var(--color-navy-lighter);
@@ -59,18 +57,119 @@
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
-  outline: none;
   cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 
-.select option {
+.customSelectTrigger:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chevron {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+.customDropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
   background: var(--color-navy-lighter);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdownList {
+  max-height: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownItem {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.dropdownItem:hover {
+  background: var(--color-navy-light);
   color: var(--color-text-primary);
+}
+
+.activeDropdownItem {
+  background: var(--color-navy-light);
+  color: var(--color-emerald-bright);
+  font-weight: 600;
+}
+
+.dropdownItemName {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deletePortfolioBtn {
+  background: transparent;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 4px;
+  opacity: 0.5;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.deletePortfolioBtn:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.dropdownFooter {
+  border-top: 1px solid var(--glass-border);
+  padding: 8px;
+  background: var(--color-navy-light);
+}
+
+.dropdownAddBtn {
+  width: 100%;
+  background: transparent;
+  color: #10B981;
+  border: 1px dashed var(--glass-border);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdownAddBtn:hover {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: #10B981;
 }
 
 .navMenu {
