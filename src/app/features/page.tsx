@@ -3,15 +3,15 @@
 import styles from './page.module.css';
 import Link from 'next/link';
 import Feature3D from '@/components/features/Feature3D';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 export default function Features() {
-  const fadeUp = {
+  const fadeUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
-  const staggerContainer = {
+  const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,

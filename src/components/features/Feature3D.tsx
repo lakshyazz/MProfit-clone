@@ -139,7 +139,9 @@ const TaxScene = ({ hover }: { hover: boolean }) => {
       const stampY = hover ? 0.5 : 2;
       stampRef.current.position.y = THREE.MathUtils.lerp(stampRef.current.position.y, stampY, 0.15);
       stampRef.current.rotation.z = THREE.MathUtils.lerp(stampRef.current.rotation.z, hover ? -0.2 : 0, 0.1);
-      stampRef.current.material.opacity = THREE.MathUtils.lerp(stampRef.current.material.opacity, hover ? 1 : 0, 0.1);
+      
+      const mat = stampRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = THREE.MathUtils.lerp(mat.opacity, hover ? 1 : 0, 0.1);
     }
   });
 
